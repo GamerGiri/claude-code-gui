@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+pyvenv.cfg
+*.egg-info/
+build/
+dist/
+
+# App runtime state (created on first launch)
+.claude-gui/
+gui.log
+gui2.log
+app_pid.txt
+layout.json
+
+# Claude Code CLI state is the user's own; not part of this app
+.claude/
+.claude/settings.local.json
+node_modules/
+npm-cache/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/

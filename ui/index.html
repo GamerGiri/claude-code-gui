@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Claude Code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ============ sidebar ============ -->
+<aside id="sidebar">
+  <div class="brand">
+    <div class="mark">&#10035;</div>
+    <div>
+      <div class="brand-name">Claude Code</div>
+      <div class="brand-sub" id="brandSub">not connected</div>
+    </div>
+  </div>
+
+  <button class="btn primary block" id="newSession">+ New session</button>
+
+  <div class="side-label">Working directory</div>
+  <div class="cwd-row">
+    <input id="cwdInput" spellcheck="false" placeholder="C:\path\to\project" />
+    <button class="btn ghost icon" id="pickFolder" title="Browse">&#8943;</button>
+  </div>
+
+  <div class="side-label">Sessions</div>
+  <div id="sessionList" class="session-list"></div>
+
+  <div class="side-foot">
+    <button class="btn ghost tiny" id="refreshSessions">&#8635; Refresh</button>
+    <span id="authChip" class="chip">checking auth&#8230;</span>
+  </div>
+</aside>
+
+<!-- ============ main ============ -->
+<main id="main">
+  <header id="topbar">
+    <div class="title-wrap">
+      <div class="session-title" id="sessionTitle">New session</div>
+      <div class="path-line" id="pathLine"></div>
+    </div>
+    <div class="controls">
+      <select id="modelSel" title="Model"></select>
+      <select id="modeSel" title="Permission mode"></select>
+      <select id="effortSel" title="Effort"></select>
+      <button class="btn ghost" id="usageBtn" title="Context usage">Context</button>
+      <button class="btn ghost danger" id="stopBtn" title="Interrupt turn" disabled>&#9632; Stop</button>
+    </div>
+  </header>
+
+  <section id="transcript" tabindex="0"></section>
+
+  <section id="usagePanel" class="hidden">
+    <div class="panel-head">
+      <b>Context window</b>
+      <button class="btn ghost tiny" id="closeUsage">Close</button>
+    </div>
+    <div id="usageBody"></div>
+  </section>
+
+  <footer id="composer">
+    <div class="quick" id="quickRow">
+      <button class="chip q" data-q="Review my current changes and point out risks.">Review changes</button>
+      <button class="chip q" data-q="Explain this repository's architecture in plain language.">Explain repo</button>
+      <button class="chip q" data-q="Run the test suite, then fix the failures.">Fix failing tests</button>
+      <button class="chip q" data-q="Find dead code and unused exports.">Find dead code</button>
+    </div>
+    <div class="input-shell">
+      <div id="slashMenu" class="slash-menu hidden"></div>
+      <textarea id="prompt" rows="3" spellcheck="false"
+        placeholder="Ask Claude to build, refactor, debug&#8230;  (Enter sends &#183; Shift+Enter newline &#183; / for commands)"></textarea>
+      <div id="attachBar" class="attach-bar hidden"></div>
+      <div class="input-bar">
+        <div class="attach-tools">
+          <button class="btn ghost tiny" id="attachFile" title="Attach files by path">&#128206; Files</button>
+          <button class="btn ghost tiny" id="attachClip" title="Add the image on your clipboard">&#128247; Clipboard</button>
+          <span class="hint">paste images &#183; drag files in &#183; Enter send &#183; Esc stop</span>
+        </div>
+        <button id="sendBtn" class="btn primary">Send &#8629;</button>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<!-- ============ right rail: git ============ -->
+<aside id="rail">
+  <div class="rail-head">
+    <b>Changes</b>
+    <button class="btn ghost tiny" id="refreshGit">&#8635;</button>
+  </div>
+  <div class="rail-body" id="gitBody"><div class="muted">No git data.</div></div>
+</aside>
+
+<!-- ============ permission modal ============ -->
+<div id="permOverlay" class="overlay hidden">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="tool-badge" id="permTool">Bash</span>
+      <span class="modal-title" id="permTitle">Claude Code wants to run a command</span>
+    </div>
+    <p class="modal-desc" id="permDesc"></p>
+    <pre class="modal-input" id="permInput"></pre>
+    <div class="modal-reason hidden" id="permReason"></div>
+    <div class="modal-actions">
+      <button class="btn primary" id="permAllow">Allow once</button>
+      <button class="btn accent" id="permAlways">Always allow</button>
+      <button class="btn ghost danger" id="permDeny">Deny</button>
+    </div>
+    <textarea id="permFeedback" rows="2" class="hidden"
+      placeholder="Tell Claude what to do instead&#8230;"></textarea>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
